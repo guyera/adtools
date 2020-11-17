@@ -209,8 +209,8 @@ def delong_roc_variance(ground_truth, predictions, sample_weight=None):
        ground_truth: np.array of 0 and 1
        predictions: np.array of floats of the probability of being class 1
     """
-    order, label_1_count, ordered_sample_weight = compute_ground_truth_statistics(
-        ground_truth, sample_weight)
+    order, label_1_count, ordered_sample_weight = \
+            compute_ground_truth_statistics(ground_truth, sample_weight)
     predictions_sorted_transposed = predictions[np.newaxis, order]
     aucs, delongcov = fastDeLong(predictions_sorted_transposed,
                                  label_1_count, ordered_sample_weight)

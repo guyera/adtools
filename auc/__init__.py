@@ -1,1 +1,1 @@
-from .auc import compute_auc
+from adtools.auc.auc import compute_auc

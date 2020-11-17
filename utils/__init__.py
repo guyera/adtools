@@ -1,1 +1,1 @@
-from . import data
+from adtools.utils import data

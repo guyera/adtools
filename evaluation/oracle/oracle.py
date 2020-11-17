@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from torch import Tensor
+
 """
 Created Monday 11/16/2020 10:20 AM PST
 

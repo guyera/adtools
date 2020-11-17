@@ -1,1 +1,1 @@
-from .classeddataset import ClassedDataset
+from adtools.utils.data.classeddataset import ClassedDataset

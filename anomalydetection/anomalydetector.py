@@ -16,24 +16,8 @@ Description:
 """
 Description:
   Abstract base class for PyTorch anomaly detectors
-
-Attributes:
-  receives_feedback (bool): Determines whether or not the anomaly
-                            detector is capable of receiving online
-                            feedback during test time. If true,
-                            receive_feedback() should be overridden.
 """
 class AnomalyDetector(ABC):
-  	"""
-	Description:
-	  Constructor
-
-	Parameters:
-	  receives_feedback: Corresponds to receives_feedback attribute
-	"""
-	def __init__(self, receives_feedback: bool = False):
-		self.receives_feedback = receives_feedback
-	
 	"""
 	Description: 
 	  Fits the anomaly detector to the training data.
@@ -85,16 +69,3 @@ class AnomalyDetector(ABC):
 	@abstractmethod
 	def __call__(self, input: Tensor) -> Tensor:
 		return NotImplemented
-	
-	"""
-	Description:
-	  Receives feedback in the form of a single data point during test time
-	  and updates the model accordingly.
-	
-	Parameters:
-	  input: A Tensor representing the feedback data point
-	  target: A 1-sized Tensor containing the binary target of the input.
-	          0 represents nominal data, 1 represents anomalous data.
-	"""
-	def receive_feedback(self, input: Tensor, target: Tensor) -> None:
-		pass

@@ -1,3 +1,4 @@
-from . import auc
-from . import utils
-from . import oracle
+from adtools import auc
+from adtools import utils
+from adtools import evaluation
+from adtools import anomalydetection
