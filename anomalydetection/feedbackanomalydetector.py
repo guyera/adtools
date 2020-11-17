@@ -21,16 +21,16 @@ Description:
   test time and updating accordingly.
 """
 class FeedbackAnomalyDetector(AnomalyDetector):
-	"""
-	Description:
-	  Receives feedback in the form of a single data point during test time
-	  and updates the model accordingly.
-	
-	Parameters:
-	  input: A Tensor representing the feedback data point
-	  target: A 1-sized Tensor containing the binary target of the input.
-	          0 represents nominal data, 1 represents anomalous data.
-	"""
-	@abstractmethod
-	def receive_feedback(self, input: Tensor, target: Tensor) -> None:
-		return NotImplemented
+    """
+    Description:
+      Receives feedback in the form of a single data point during test time
+      and updates the model accordingly.
+    
+    Parameters:
+      input: A Tensor representing the feedback data point
+      target: A 1-sized Tensor containing the binary target of the input.
+              0 represents nominal data, 1 represents anomalous data.
+    """
+    @abstractmethod
+    def receive_feedback(self, input: Tensor, target: Tensor) -> None:
+        return NotImplemented

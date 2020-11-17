@@ -230,14 +230,14 @@ Parameters:
   ci_confidence: Confidence score (in [0, 1]) of confidence interval
 """
 def compute_auc(y_true: 'np.ndarray[np.int32]', y_pred: 'np.ndarray[np.int32]',
-                ci_confidence: float = None):
-        auc, auc_cov = delong_roc_variance(y_true, y_pred)
-        if ci_confidence is None:
-                return auc, auc_cov, None
-        if auc_cov == 0.0:
-                return auc, auc_cov, [auc, auc]
-        auc_std = np.sqrt(auc_cov)
-        lower_upper_q = np.abs(np.array([0, 1]) - (1 - ci_confidence) / 2)
-        ci = stats.norm.ppf(lower_upper_q, loc = auc, scale = auc_std)
-        ci[ci > 1] = 1
-        return auc, auc_cov, ci
+        ci_confidence: float = None):
+    auc, auc_cov = delong_roc_variance(y_true, y_pred)
+    if ci_confidence is None:
+        return auc, auc_cov, None
+    if auc_cov == 0.0:
+        return auc, auc_cov, [auc, auc]
+    auc_std = np.sqrt(auc_cov)
+    lower_upper_q = np.abs(np.array([0, 1]) - (1 - ci_confidence) / 2)
+    ci = stats.norm.ppf(lower_upper_q, loc = auc, scale = auc_std)
+    ci[ci > 1] = 1
+    return auc, auc_cov, ci
