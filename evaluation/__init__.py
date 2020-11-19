@@ -1,1 +1,2 @@
 from adtools.evaluation import oracle
+from latentspaceevaluator import LatentSpaceEvaluator
