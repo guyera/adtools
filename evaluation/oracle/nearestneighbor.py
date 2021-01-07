@@ -53,7 +53,7 @@ class KNeighborsOracle(ProbabilisticOracle):
     """
     def predict_probabilities(self, data: Tensor) -> Tensor:
         data = data.data.cpu().numpy()
-        probabilities = from_numpy(self.classifier.predict(data))
+        probabilities = from_numpy(self.classifier.predict_proba(data))
         probabilities = probabilities.to(self.device) \
                 if self.device is not None else probabilities
-        return probabilities
+        return probabilities[::, 1]

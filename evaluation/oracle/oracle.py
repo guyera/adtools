@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from torch import Tensor, device as tdevice
+from torch import Tensor, argmax, device as tdevice
 
 """
 Created Monday 11/16/2020 10:20 AM PST
@@ -65,8 +65,9 @@ class Oracle:
     def classify(self, data: Tensor) -> Tensor:
         return NotImplemented
 
-    def to(self, device: tdevice) -> None:
+    def to(self, device: tdevice):
         self.device = device
+        return self
 
 """
 Description:
@@ -82,12 +83,12 @@ class ProbabilisticOracle(Oracle):
       Returns class probability predictions for the given examples
 
     Parameters:
-      data: An (N, ...)-sized Tensor for which to compute class probability
+      data: An (N, ...)-sized Tensor for which to compute anomaly probability
             predictions
 
     Returns:
-      1: An (N, K)-sized Tensor of class probability predictions, where N is
-         the number of data points and K is the number of classes
+      1: An N-sized Tensor of anomaly probability predictions, where N is
+         the number of data points
     """
     @abstractmethod
     def predict_probabilities(self, data: Tensor) -> Tensor:
@@ -98,4 +99,4 @@ class ProbabilisticOracle(Oracle):
     """
     def classify(self, data: Tensor) -> Tensor:
         probabilities = self.predict_probabilities(data)
-        return torch.argmax(probabilities, dim = 1)
+        return (probabilities > 0.5).int()

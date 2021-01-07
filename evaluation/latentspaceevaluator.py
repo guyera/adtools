@@ -153,9 +153,10 @@ class LatentSpaceEvaluator:
     Parameters:
       training_data: An (N, ...)-sized Tensor from which to construct bootstrap
                      samples and fit the oracles
-      training_data_targets: An N-sized Tensor of target binary classification targets
-                             associated with training_data. 0 corresponds to
-                             nominal data, 1 corresponds to anomalous data
+      training_data_targets: An N-sized Tensor of target binary classification
+                             targets associated with training_data. 0
+                             corresponds to nominal data, 1 corresponds to
+                             anomalous data
       testing_data: An (N, ...)-sized Tensor from which to construct bootstrap
                     samples to test the oracles and evaluate the latent
                     representation
