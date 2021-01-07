@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from torch import Tensor
+from torch import Tensor, argmax, device as tdevice
 
 """
 Created Monday 11/16/2020 10:20 AM PST
@@ -9,7 +9,7 @@ Authors:
   Alexander Guyer
 
 Description:
-  Provides an abstract base class for PyTorch oracle anomaly
+  Provides abstract base classes for PyTorch oracle anomaly
   detectors
 """
 
@@ -17,7 +17,10 @@ Description:
 Description:
   Abstract base class for PyTorch oracle anomaly detectors
 """
-class OracleAnomalyDetector:
+class Oracle:
+    def __init__(self):
+        self.device = None
+    
     """
     Description:
       Fits the oracle anomaly detector to the data provided.
@@ -35,7 +38,8 @@ class OracleAnomalyDetector:
                                validation data. 0 represents nominal data,
                                and 1 represents anomalous data.
       kwargs: Can be used for implementation-specific training-time
-              arguments.
+              arguments, but training-time arguments should be specified
+              during oracle construction whenever possible.
     """
     @abstractmethod
     def fit(self, training_data: Tensor,
@@ -53,10 +57,46 @@ class OracleAnomalyDetector:
       data: (N, ...) sized tensor of data points to classify
 
     Returns:
-      An N-sized tensor of binary classifications. 0 represents nominal
-      data, and 1 represents anomalous data. The ordering of the
-      classifications matches the ordering of the provided data points.
+      1: An N-sized tensor of binary classifications. 0 represents nominal
+         data, and 1 represents anomalous data. The ordering of the
+         classifications matches the ordering of the provided data points.
     """
     @abstractmethod
     def classify(self, data: Tensor) -> Tensor:
         return NotImplemented
+
+    def to(self, device: tdevice):
+        self.device = device
+        return self
+
+"""
+Description:
+  Abstract base class for PyTorch oracle anomaly detectors whose predictions
+  are probabilities. This can be useful for understanding the degree of
+  correctness or incorrectness of predictions.
+"""
+class ProbabilisticOracle(Oracle):
+    def __init__(self):
+        super().__init__()
+    """
+    Description:
+      Returns class probability predictions for the given examples
+
+    Parameters:
+      data: An (N, ...)-sized Tensor for which to compute anomaly probability
+            predictions
+
+    Returns:
+      1: An N-sized Tensor of anomaly probability predictions, where N is
+         the number of data points
+    """
+    @abstractmethod
+    def predict_probabilities(self, data: Tensor) -> Tensor:
+        return NotImplemented
+
+    """
+    See adtools.evaluation.oracle.oracle.Oracle
+    """
+    def classify(self, data: Tensor) -> Tensor:
+        probabilities = self.predict_probabilities(data)
+        return (probabilities > 0.5).int()
